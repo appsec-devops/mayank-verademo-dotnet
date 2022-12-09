@@ -24,7 +24,7 @@ jobs:
       
     - name: List folder contents for visual of folder contents
       run: |
-         ls -la
+         dir
    
     - name: Upload Application Build Artifact
       uses: actions/upload-artifact@v3.1.0
