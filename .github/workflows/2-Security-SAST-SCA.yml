@@ -1,0 +1,44 @@
+name: 2-Security-Scan-SAST-SCA
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Runs "Every Sunday" (see https://crontab.guru)
+    - cron: '5 8 * * Sun'
+
+jobs:
+  Veracode_SAST_SCA_Scan:
+
+    runs-on: ubuntu-latest
+    container: 
+      image: veracode/api-wrapper-java:latest
+      options: --user root
+    steps:
+        
+# Security Scan Mainline Branch / SAST and SCA Sanbox Scan
+      
+    - name: Download Checkout-Build-Artifact Workflow Artifact
+      uses: qiwi-forks/action-download-artifact@v2
+      with: 
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: 1-Checkout-Build-Artifact.yml
+        name: VeraDemo-DotNet-App-Artifact
+        skip_unpack: true
+      continue-on-error: false
+    
+    - name: List folder contents for visual to confirm artifact file exists
+      run: |
+        ls -la
+        
+    - name: Veracode Upload and Scan Action Step
+      uses: veracode/veracode-uploadandscan-action@master
+      id: upload_and_scan
+      with:
+        appname: 'VeraDemo-DotNet-GitHub'
+        createprofile: false
+        version: '${{ github.run_id }}-'
+        criticality: Medium
+        filepath: 'VeraDemo-DotNet-App-Artifact.zip'
+        vid: '${{ secrets.VERACODE_API_ID }}'
+        vkey: '${{ secrets.VERACODE_API_KEY }}'
+      continue-on-error: true
