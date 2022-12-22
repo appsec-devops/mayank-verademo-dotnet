@@ -31,3 +31,10 @@ jobs:
       with:
         name: VeraDemo-DotNet-App-Artifact
         path: Verademo-Dotnet/bin/
+
+# Running Software Composition Analysis Agent against the local repo while on a Windows machine since this is ASPDotNet
+
+    - name: SCA Agent Scan of Repo
+      env: 
+        SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan
