@@ -2,10 +2,11 @@ name: 2-Security-Scan-SAST-SCA
 
 on:
   workflow_dispatch:
-  schedule:
-    # Runs "Every Sunday" (see https://crontab.guru)
-    - cron: '5 8 * * Sun'
-
+  workflow_run:
+    workflows: ["1-Checkout-Build-Artifact"]
+    types:
+      - completed
+      
 jobs:
   Veracode_SAST_SCA_Scan:
 
