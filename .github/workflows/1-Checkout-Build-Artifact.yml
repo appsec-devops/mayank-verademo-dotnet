@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # Runs "Everyday at 7:05" (see https://crontab.guru)
-    - cron: '5 7 * * *'
+   # - cron: '5 7 * * *'
 jobs:
   Checkout-Build-Artifact:
 
